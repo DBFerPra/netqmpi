@@ -281,7 +281,8 @@ class NetQASMCommunicator(QMPICommunicator):
             comm._reset_sockets()
 
         with _simulation.squidasm_patches(self._config.epr_setup_timeout,
-                                          self._config.poll_interval):
+                                          self._config.poll_interval), \
+                _simulation.plugin_context(self._config):
             try:
                 simulate_application(
                     app_instance=app_instance,

@@ -14,6 +14,10 @@ an HPC emulation, a plain circuit — and how faithfully.
 | **[Qiskit Aer](aer.md)** | `--aer` | Shot-based circuit simulation | `qiskit`, `qiskit-aer` |
 | **[Qoala](qoala.md)** | `--qoala` | Quantum-internet **node execution environment**, with task scheduling and multitasking — simulation only | [`qoala`](https://github.com/QuTech-Delft/qoala-sim), [`netsquid`](https://netsquid.org), `netqasm` **2.x**, Python 3.10–3.12 |
 
+The NetQASM backend can also be extended with
+[simulation plugins](netqasm-plugins.md): Python code outside NetQMPI that
+models hardware or links SquidASM's configuration cannot describe.
+
 ::::{grid} 1 1 2 2
 :gutter: 2
 
@@ -166,6 +170,7 @@ See [Architecture](../development/architecture.md) and
 
 cunqa
 netqasm
+netqasm-plugins
 aer
 qoala
 ```

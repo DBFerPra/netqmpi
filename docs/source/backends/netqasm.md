@@ -137,7 +137,7 @@ The `netqasm` block accepts the fields of
 |---|---|---|
 | `shots` | `50` | Simulated repetitions — see the note below |
 | `netqasm_major` | `2` | NetQASM release the run expects; `--netqasm1.0` sets `1` |
-| `formalism` | `Formalism.KET` | Quantum state formalism |
+| `formalism` | `ket` | Quantum state formalism: `ket`, `dm` (density matrix) or `stab` (stabiliser) |
 | `enable_logging` | `false` | Per-rank instruction logging — see [Logging](#logging) |
 | `hardware` | `"generic"` | Node hardware, `"generic"` or `"nv"` |
 | `network_config` | `None` | Path to a network YAML; when unset the network is built from the keys below |
@@ -151,6 +151,8 @@ The `netqasm` block accepts the fields of
 | `log_cfg` | `None` | NetQASM log configuration |
 | `roles` | `"roles.yaml"` | Roles configuration file |
 | `post_function` | `None` | Function invoked after the simulation |
+| `plugin` | `None` | `"module:callable"` naming a [simulation plugin](netqasm-plugins.md) |
+| `plugin_config` | `None` | Parameters handed to the plugin, unread by NetQMPI |
 
 :::{important}
 `shots` defaults to **50** here, not to the generic 1024. SquidASM simulates
@@ -183,6 +185,11 @@ ValueError: The simulated network is too small for this program:
 ```
 
 `cascade` with six qubits per rank, for instance, needs seven.
+
+Hardware or links that these keys cannot describe, such as per-gate noise,
+readout error or another link model, are added with a
+[simulation plugin](netqasm-plugins.md), without changing NetQMPI or the
+program.
 
 Several of these hold Python objects rather than scalars and cannot be expressed
 in YAML. Build a `NetQASMRunConfig` in Python and call

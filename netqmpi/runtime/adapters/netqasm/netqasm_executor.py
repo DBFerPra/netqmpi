@@ -12,12 +12,13 @@ from ``netqasm.*``.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional, Callable
+from typing import Any, Callable, Dict, Mapping, Optional
 
 from netqasm.runtime.app_config import AppConfig
 from netqasm.util.yaml import load_yaml
 from netqasm.runtime.settings import Formalism
 
+from netqmpi.runtime.adapters.netqasm import _simulation
 from netqmpi.runtime.adapters.netqasm._compat import require_major
 
 from netqmpi.runtime.adapters.netqasm.netqasm_communicator import (
@@ -53,7 +54,8 @@ class NetQASMRunConfig(RunConfig):
             so the generic default would take a quarter of an hour and look
             like a hang. Raise it with ``--shots`` when the statistics
             matter more than the wait.
-        formalism: Quantum state formalism to use in the simulation.
+        formalism: Quantum state formalism to use in the simulation. A
+            config file gives it by name: ``ket``, ``dm`` or ``stab``.
         enable_logging: Whether SquidASM writes its instruction and
             communication logs. Off by default: the logs cost disk I/O inside
             the simulation, and SquidASM names their directory to the second,
@@ -61,6 +63,14 @@ class NetQASMRunConfig(RunConfig):
             ``FileExistsError``. When on, each run logs to a directory of its
             own under ``./log`` unless ``log_cfg.log_dir`` names one.
         hardware: SquidASM node hardware, ``"generic"`` or ``"nv"``.
+        plugin: ``"module:callable"`` naming code that customises the
+            SquidASM simulation, for hardware or links SquidASM cannot
+            describe on its own. The module is imported as ``python -m``
+            would, the working directory first. The callable is given
+            ``plugin_config`` and returns a context manager, entered around
+            the simulation and exited after it.
+        plugin_config: Mapping handed to ``plugin`` untouched; NetQMPI does
+            not read it.
         network_config: Path to a NetQASM network YAML describing the
             simulated topology. If ``None``, a fully connected network is
             built from the fields below.
@@ -93,6 +103,8 @@ class NetQASMRunConfig(RunConfig):
     formalism: Formalism = field(default_factory=lambda: Formalism.KET)
     enable_logging: bool = False
     hardware: str = "generic"
+    plugin: Optional[str] = None
+    plugin_config: Optional[Dict[str, Any]] = None
     post_function: Optional[Callable] = None
     network_config: Optional[Any] = None
     num_qubits: int = 5
@@ -108,6 +120,23 @@ class NetQASMRunConfig(RunConfig):
     roles: str = "roles.yaml"
 
     def __post_init__(self) -> None:
+        if isinstance(self.formalism, str):
+            try:
+                self.formalism = Formalism(self.formalism.lower())
+            except ValueError:
+                raise ValueError(
+                    f"Unknown formalism {self.formalism!r}; expected one of "
+                    f"{[f.value for f in Formalism]}.") from None
+        if self.plugin is not None:
+            # Imported now so a wrong name stops the run before any circuit
+            # is traced, not at the end of it.
+            _simulation.load_plugin(self.plugin)
+        elif self.plugin_config is not None:
+            raise ValueError("plugin_config is given but no plugin to hand it to.")
+        if self.plugin_config is not None and not isinstance(self.plugin_config, Mapping):
+            raise ValueError(
+                f"plugin_config must be a mapping of parameters, got "
+                f"{type(self.plugin_config).__name__}.")
         if self.num_qubits < 1:
             raise ValueError(f"num_qubits must be at least 1, got {self.num_qubits}.")
         if self.t1 < 0 or self.t2 < 0:

@@ -1,0 +1,13 @@
+# NetQMPI configuration: the NetQASM backend with readout error.
+#
+#   netqmpi -n 2 app.py --netqasm --config config.yaml
+#
+# Run from this directory: `plugin` is imported from the working directory.
+
+shots: 200
+
+netqasm:
+  plugin: readout_error:readout_error   # module:callable
+  plugin_config:                        # handed to the plugin, unread by NetQMPI
+    prob_error_0: 0.05                  # a 0 reads as 1
+    prob_error_1: 0.20                  # a 1 reads as 0

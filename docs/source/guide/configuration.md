@@ -135,7 +135,7 @@ no separate readout-flip model.
 
 | Key | Type | Default | Meaning |
 |---|---|---|---|
-| `formalism` | `Formalism` | `Formalism.KET` | Quantum state formalism used by the simulation |
+| `formalism` | str | `ket` | Quantum state formalism: `ket`, `dm` (density matrix) or `stab` (stabiliser) |
 | `enable_logging` | bool | `false` | Per-rank instruction logging, each run in its own directory under `./log` |
 | `hardware` | str | `"generic"` | Node hardware, `"generic"` or `"nv"` |
 | `network_config` | str | `None` | Path to a network YAML; when unset the network is built from the keys below |
@@ -149,9 +149,11 @@ no separate readout-flip model.
 | `log_cfg` | Any | `None` | NetQASM log configuration |
 | `roles` | str | `"roles.yaml"` | Roles configuration file |
 | `post_function` | callable | `None` | Function invoked after the simulation |
+| `plugin` | str | `None` | `"module:callable"` naming a [simulation plugin](../backends/netqasm-plugins.md) |
+| `plugin_config` | mapping | `None` | Parameters handed to the plugin, unread by NetQMPI |
 
-Several of these — `formalism`, `network_config`, `log_cfg`, `post_function` —
-hold objects rather than scalars and cannot be expressed in YAML. Set them by
+Several of these (`network_config`, `log_cfg`, `post_function`) hold objects
+rather than scalars and cannot be expressed in YAML. Set them by
 constructing a
 {class}`~netqmpi.runtime.adapters.netqasm.netqasm_executor.NetQASMRunConfig` in
 Python and driving the run through

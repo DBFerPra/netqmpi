@@ -386,6 +386,29 @@ and `co_located` has to match how they were raised. `backend`, `time` and
 `simulator` only mean anything when `qraise: true`, so setting them while
 attaching to running vQPUs is reported rather than silently ignored.
 
+### NetQASM: simulation plugins
+
+The `netqasm` block describes the simulated hardware with a few keys: qubits
+per node, `t1`/`t2`, one fidelity for every gate and one for every link. For
+anything else (noise per gate type, readout error, other native gates, other
+link models), the block can name a **plugin**: Python code, outside NetQMPI,
+that changes how SquidASM simulates while the run lasts. The program does not
+change.
+
+```yaml
+netqasm:
+  plugin: readout_error:readout_error   # module:callable, from the working directory first
+  plugin_config:                        # handed to the plugin, unread by NetQMPI
+    prob_error_0: 0.05
+    prob_error_1: 0.20
+```
+
+A plugin is a callable that takes `plugin_config` and returns a context
+manager, which NetQMPI keeps entered while SquidASM simulates.
+[`examples/plugins/`](examples/plugins) has two complete plugins, and the
+[plugin guide](https://netqir.github.io/netqmpi/backends/netqasm-plugins.html)
+describes the contract, SquidASM's extension points and how to test a plugin.
+
 ## Writing a new backend
 
 Adding a backend **never requires touching the SDK**. Following the architecture
@@ -418,6 +441,10 @@ these three components differs.
 Ready-to-run scripts live in [`examples/`](examples):
 `1_send_recv.py` (distributed superposition / teleportation),
 `2_round_robin.py`, `3_scatter.py`, `4_gather.py`, `5_qft_expose.py`.
+
+[`examples/plugins/`](examples/plugins) has two simulation plugins for the
+NetQASM backend, each with a program and a configuration file: readout error,
+and separate noise for one- and two-qubit gates.
 
 [`examples/frequent_errors/`](examples/frequent_errors) collects programs that are
 *meant* to fail, one failure mode each, with a `run_all.py` that reports what

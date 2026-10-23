@@ -17,6 +17,8 @@ Everything here runs once per NetQMPI run, from the last rank's
 * :func:`squidasm_patches` and :func:`stop_backend` are the workarounds: a
   wall-clock timeout that SquidASM hard-codes and a busy wait, and a backend
   thread that SquidASM leaves running when a program fails.
+* :func:`plugin_context` runs the user's plugin, if the config names one,
+  around the simulation.
 
 SquidASM is imported lazily and only by the workarounds, so the rest of this
 module works against NetQASM alone (the ``debug`` simulator included).
@@ -25,11 +27,16 @@ from __future__ import annotations
 
 import copy
 import functools
+import importlib
 import os
+import sys
 import tempfile
 from contextlib import contextmanager
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict, Iterable, Iterator, List, Optional
+from typing import (
+    TYPE_CHECKING, Any, Callable, ContextManager, Dict, Iterable, Iterator, List,
+    Optional,
+)
 
 from netqasm.runtime.interface.config import (
     Link, NetworkConfig, Node, NoiseType, QuantumHardware, Qubit,
@@ -231,6 +238,60 @@ def squidasm_patches(epr_setup_timeout: float,
     finally:
         NetworkStack.setup_epr_socket = original_setup
         runtime_mgr.as_completed = original_as_completed
+
+
+def load_plugin(spec: str) -> Callable[[Dict[str, Any]], ContextManager]:
+    """
+    Import the plugin a ``"module:callable"`` string names.
+
+    The module is looked up as ``python -m`` would, from the working
+    directory first, so a plugin can live next to the program that uses it.
+
+    Args:
+        spec: ``"package.module:callable"``.
+
+    Returns:
+        The callable.
+
+    Raises:
+        ValueError: If the string is malformed, the module cannot be
+            imported, or the name is not a callable in it.
+    """
+    module_name, _, attribute = spec.partition(":")
+    if not module_name or not attribute:
+        raise ValueError(f"plugin must read 'module:callable', got {spec!r}.")
+
+    cwd = os.getcwd()
+    added = cwd not in sys.path
+    if added:
+        sys.path.insert(0, cwd)
+    try:
+        module = importlib.import_module(module_name)
+    except ImportError as error:
+        raise ValueError(f"Cannot import plugin module {module_name!r}: {error}") from error
+    finally:
+        if added:
+            sys.path.remove(cwd)
+
+    factory = getattr(module, attribute, None)
+    if not callable(factory):
+        raise ValueError(f"Plugin module {module_name!r} has no callable {attribute!r}.")
+    return factory
+
+
+@contextmanager
+def plugin_context(config: "NetQASMRunConfig") -> Iterator[None]:
+    """
+    Run the plugin the config names, if any, around the simulation.
+
+    Args:
+        config: Run configuration providing ``plugin`` and ``plugin_config``.
+    """
+    if config.plugin is None:
+        yield
+        return
+    with load_plugin(config.plugin)(config.plugin_config or {}):
+        yield
 
 
 def stop_backend() -> None:

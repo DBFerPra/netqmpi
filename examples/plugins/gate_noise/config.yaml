@@ -1,0 +1,19 @@
+# NetQMPI configuration: the NetQASM backend with separate noise for one- and
+# two-qubit gates.
+#
+#   netqmpi -n 2 app.py --netqasm --config config.yaml
+#
+# Run from this directory: `plugin` is imported from the working directory.
+# Times in ns.
+
+shots: 200
+
+netqasm:
+  num_qubits: 5                        # still NetQMPI's: qubits per node
+  plugin: gate_noise:gate_noise
+  plugin_config:
+    single_qubit_depolar_prob: 0.01
+    two_qubit_depolar_prob: 0.2
+    single_qubit_duration: 50.0
+    two_qubit_duration: 300.0
+    init_duration: 1000.0
