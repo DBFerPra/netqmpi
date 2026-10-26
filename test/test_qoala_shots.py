@@ -35,7 +35,7 @@ from netqmpi.runtime.adapters.qoala.qoala_executor import (
 
 from conftest import StubCommunicator
 
-GHZ = Path(__file__).resolve().parents[1] / "scripts/benchmark/apps/ghz.py"
+GHZ = Path(__file__).resolve().parent / "apps/ghz.py"
 
 
 def compile_ghz(ranks: int, monkeypatch):

@@ -373,7 +373,7 @@ def test_two_sends_in_a_row_arrive(tmp_path):
 
 def test_cascade_with_two_qubits_per_rank_finishes(tmp_path):
     """N1 as the benchmark met it: cascade, n=2, q=2, one shot, under 30 s."""
-    app = Path(__file__).resolve().parents[1] / "scripts/benchmark/apps/cascade.py"
+    app = Path(__file__).resolve().parent / "apps/cascade.py"
     output = run_in_child(app, 2, tmp_path, shots=1, timeout=30,
                           env={"NQB_QUBITS_PER_RANK": "2"})
     assert "RESULTS {0: {'00': 1}, 1: {'00': 1}}" in output, output
@@ -409,7 +409,7 @@ def test_a_rank_failing_mid_simulation_fails_the_run(ranks, tmp_path):
 
 def test_a_program_too_big_for_the_default_network_is_refused(tmp_path):
     """N3: six qubits cascaded need seven at once; nodes have five."""
-    app = Path(__file__).resolve().parents[1] / "scripts/benchmark/apps/cascade.py"
+    app = Path(__file__).resolve().parent / "apps/cascade.py"
     output = run_in_child(app, 2, tmp_path, timeout=60,
                           env={"NQB_QUBITS_PER_RANK": "6"})
     assert "RAISED ValueError" in output and "needs 7 qubits" in output, output

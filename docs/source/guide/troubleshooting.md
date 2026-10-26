@@ -29,7 +29,7 @@ it back to a line of your code.
 ## Error catalogue
 
 The repository ships
-[`examples/frequent_errors/`](https://github.com/NetQIR/net-qmpi/tree/main/examples/frequent_errors):
+[`examples/frequent_errors/`](https://github.com/NetQIR/netqmpi/tree/main/examples/frequent_errors):
 a corpus of programs that are *meant* to fail, one failure mode each. Run them
 all with
 

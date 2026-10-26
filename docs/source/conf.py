@@ -169,13 +169,13 @@ html_theme_options = {
     "light_logo": "logo-dark.svg",
     "dark_logo": "logo-light.svg",
     "sidebar_hide_name": True,
-    "source_repository": "https://github.com/NetQIR/net-qmpi/",
+    "source_repository": "https://github.com/NetQIR/netqmpi/",
     "source_branch": "main",
     "source_directory": "docs/source/",
     "footer_icons": [
         {
             "name": "GitHub",
-            "url": "https://github.com/NetQIR/net-qmpi",
+            "url": "https://github.com/NetQIR/netqmpi",
             "html": (
                 '<svg stroke="currentColor" fill="currentColor" stroke-width="0" '
                 'viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 '
@@ -194,4 +194,4 @@ html_theme_options = {
 }
 
 # Served from https://netqir.github.io/net-qmpi/
-html_baseurl = "https://netqir.github.io/net-qmpi/"
+html_baseurl = "https://netqir.github.io/netqmpi/"

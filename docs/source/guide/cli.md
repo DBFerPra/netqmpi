@@ -104,5 +104,5 @@ finished simulation in 12.47 seconds
 ```
 
 The experiment drivers under
-[`scripts/experiments/`](https://github.com/NetQIR/net-qmpi/tree/main/scripts/experiments)
+[`scripts/experiments/`](https://github.com/NetQIR/netqmpi/tree/main/scripts/experiments)
 use this entry point to sweep hardware parameters across many runs.

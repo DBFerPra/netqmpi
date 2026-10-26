@@ -267,7 +267,7 @@ def test_swap_around_a_round_trip(tmp_path):
 def test_ghz_completes_with_fidelity_one(ranks, tmp_path, monkeypatch):
     """Q1: ``apps/ghz.py`` finishes and reads all-zeros on every rank."""
     monkeypatch.setenv("NQB_QUBITS_PER_RANK", "1")
-    app = Path(__file__).resolve().parents[1] / "scripts/benchmark/apps/ghz.py"
+    app = Path(__file__).resolve().parent / "apps/ghz.py"
     results = run_app(app.read_text(), ranks, tmp_path, shots=5)
     assert results == {rank: {"0": 5} for rank in range(ranks)}, results
 

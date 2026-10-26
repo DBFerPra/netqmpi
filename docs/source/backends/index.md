@@ -64,7 +64,7 @@ out at fidelity 1 for that reason. Ask for noise explicitly — see the
 
 ## Validated scale
 
-What the benchmark apps (`scripts/benchmark/apps`) are known to run, per backend.
+What the probe programs of the benchmark (`test/apps` in this repository) are known to run, per backend.
 *n* is the number of ranks, *q* the qubits per rank.
 
 | App | Aer | Qoala | NetQASM |

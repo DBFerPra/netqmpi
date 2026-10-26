@@ -81,7 +81,7 @@ Angles are in radians. Note the argument order: the angle comes **first**.
 
 `cp` generalises `cs` (θ = π/2) and `ct` (θ = π/4), which is what the crossing
 rotations of a QFT are made of — see
-[`5_qft_expose.py`](https://github.com/NetQIR/net-qmpi/blob/main/examples/5_qft_expose.py).
+[`5_qft_expose.py`](https://github.com/NetQIR/netqmpi/blob/main/examples/5_qft_expose.py).
 
 :::{note}
 `cp` takes its angle **last** (`cp(control, target, theta)`) while `crz` takes it

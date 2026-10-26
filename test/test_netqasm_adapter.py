@@ -36,7 +36,7 @@ from netqmpi.runtime.adapters.netqasm import (  # noqa: E402
 from netqmpi.runtime.adapters.netqasm._compat import INSTALLED_MAJOR  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-APPS = REPO_ROOT / "scripts" / "benchmark" / "apps"
+APPS = Path(__file__).resolve().parent / "apps"
 
 
 class FakeSimulation:

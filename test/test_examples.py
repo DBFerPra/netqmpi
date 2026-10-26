@@ -42,9 +42,9 @@ pytest.importorskip("qiskit", reason="the Aer backend needs Qiskit")
 pytest.importorskip("qiskit_aer", reason="the Aer backend needs qiskit-aer")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "scripts" / "benchmark"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import metrics  # noqa: E402
+import histograms  # noqa: E402
 
 from netqmpi.runtime.adapters.aer import (  # noqa: E402
     AerExecutorAdapter, AerSimulatorConfig,
@@ -91,7 +91,7 @@ def run_example(name: str, ranks: int):
         Environment.__init__ = original
 
     captured.sort(key=lambda env: env.comm.rank)
-    return metrics.per_rank_histograms(captured, "aer")
+    return histograms.per_rank_histograms(captured, "aer")
 
 
 def check_silent(histogram) -> None:
@@ -195,7 +195,7 @@ def test_qft_expose():
     no-ops and an adapter that dropped them entirely would still pass. What
     it does establish is that the telegate windows leave the register
     intact. The rotations themselves are pinned by the echo probe in
-    ``scripts/benchmark/apps/qft_telegate.py``, where undoing the transform
+    ``benchmark/apps/qft_telegate.py`` of the netqmpi-benchmark repository, where undoing the transform
     makes every one of them observable.
     """
     results = run_example("5_qft_expose", 3)

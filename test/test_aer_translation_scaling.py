@@ -38,7 +38,7 @@ from conftest import StubCommunicator  # noqa: E402
 
 def traced_cascade(size: int, qubits: int = 1):
     """
-    Trace ``scripts/benchmark/apps/cascade.py`` on every rank, without running it.
+    Trace ``test/apps/cascade.py`` on every rank, without running it.
 
     Args:
         size: Number of ranks.

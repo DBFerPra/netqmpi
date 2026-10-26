@@ -29,7 +29,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-APPS = REPO_ROOT / "scripts" / "benchmark" / "apps"
+APPS = Path(__file__).resolve().parent / "apps"
 
 QUBITS = [1, 2]
 RANKS = [2, 4, 8, 12]

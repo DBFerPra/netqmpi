@@ -187,7 +187,7 @@ That is why `simulator` matters:
   program on generous vQPUs turns into a run that never seems to finish — it is
   waiting on the simulator, not deadlocked.
 
-[`examples/cunqa_backend.json`](https://github.com/NetQIR/net-qmpi/tree/main/examples)
+[`examples/cunqa_backend.json`](https://github.com/NetQIR/netqmpi/tree/main/examples)
 is sized for the examples and runs on either. It fits them all up to three ranks;
 `4_gather.py`'s root holds one qubit per rank, so a four-rank run of it wants
 `[4, 2]`.

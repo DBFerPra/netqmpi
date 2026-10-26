@@ -108,7 +108,7 @@ idiomatic way to print once. See {ref}`Reading results <reading-results>`.
 ## Shipped examples
 
 The repository ships runnable programs under
-[`examples/`](https://github.com/NetQIR/net-qmpi/tree/main/examples):
+[`examples/`](https://github.com/NetQIR/netqmpi/tree/main/examples):
 
 | Example | What it shows |
 |---|---|
@@ -119,7 +119,7 @@ The repository ships runnable programs under
 | `5_qft_expose.py` | A full 3-rank QFT built out of telegates |
 
 There is also
-[`examples/frequent_errors/`](https://github.com/NetQIR/net-qmpi/tree/main/examples/frequent_errors),
+[`examples/frequent_errors/`](https://github.com/NetQIR/netqmpi/tree/main/examples/frequent_errors),
 a corpus of programs that are *meant* to fail — one failure mode each — with a
 `run_all.py` that reports what NetQMPI says about every one of them without
 needing any vQPU. It is documented in [Troubleshooting](../guide/troubleshooting.md).

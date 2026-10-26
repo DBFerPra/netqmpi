@@ -166,7 +166,7 @@ gets an empty dict.
 ## Validation experiments
 
 The repository ships three experiments validating this backend, under
-[`scripts/experiments/`](https://github.com/NetQIR/net-qmpi/tree/main/scripts/experiments):
+[`scripts/experiments/`](https://github.com/NetQIR/netqmpi/tree/main/scripts/experiments):
 
 **Hardware-parameter propagation**
 : Checks that qdevice noise (T1/T2, gate times, depolarisation) is propagated

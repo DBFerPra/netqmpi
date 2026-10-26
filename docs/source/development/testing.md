@@ -1,7 +1,7 @@
 # The test suite
 
 NetQMPI ships a test suite of **340-odd tests** under
-[`test/`](https://github.com/NetQIR/net-qmpi/tree/main/test). It is built around
+[`test/`](https://github.com/NetQIR/netqmpi/tree/main/test). It is built around
 one observation about the architecture: because the SDK only *records* a
 program and the runtime only *translates* the record, most of the library can
 be tested with no simulator at all — and the part that cannot is pinned on the
@@ -14,7 +14,7 @@ pytest test/test_sdk_circuit_communication.py -q      # one file
 pytest -k expose                                      # one topic
 ```
 
-Configuration lives in [`pytest.ini`](https://github.com/NetQIR/net-qmpi/blob/main/pytest.ini):
+Configuration lives in [`pytest.ini`](https://github.com/NetQIR/netqmpi/blob/main/pytest.ini):
 `testpaths = test`, the repository root on `pythonpath`, and a single marker,
 `integration`.
 
@@ -190,7 +190,7 @@ than Qiskit's most-significant-first printing. The joint key stays available as
 `results.joint`, which is the only place a *correlation* between ranks is
 visible.
 
-**Doubles.** [`test/conftest.py`](https://github.com/NetQIR/net-qmpi/blob/main/test/conftest.py)
+**Doubles.** [`test/conftest.py`](https://github.com/NetQIR/netqmpi/blob/main/test/conftest.py)
 supplies what the SDK needs and nothing more:
 
 | Double | Stands in for | Used for |
@@ -286,7 +286,7 @@ backend that implements the primitives they use — which is the point of the
 architecture, and the cheapest way to hold a new adapter to the same standard.
 
 :::{seealso}
-[`examples/frequent_errors/`](https://github.com/NetQIR/net-qmpi/tree/main/examples/frequent_errors)
+[`examples/frequent_errors/`](https://github.com/NetQIR/netqmpi/tree/main/examples/frequent_errors)
 is the companion corpus: programs that are *meant* to fail, one failure mode
 each, with the layer that catches them and the message they produce. See
 [Troubleshooting](../guide/troubleshooting.md).
